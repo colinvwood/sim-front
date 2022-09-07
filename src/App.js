@@ -1,14 +1,24 @@
-import { BrowserRouter as Router, Link } from 'react-router-dom';
-import './App.css';
+import { Link, Routes, Route } from "react-router-dom";
 
 import Home from './components/home.component';
+import Sim from './components/sim/sim.component';
+import Data from './components/data/data.component';
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <Home hi={"hi"}/>
+    <div>
+      <h1>Sim front</h1>
+
+      <Routes>
+        <Route path="/" element={ <Home /> } />
+        <Route path="/sim" element={ <Sim /> } />
+        <Route path="/data" element={ <Data /> } />
+      </Routes>
+
+
+        
+        
     </div>
   );
 }
 
-export default App;
