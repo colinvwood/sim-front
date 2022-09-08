@@ -10,10 +10,12 @@ const SimForm = (props) => {
     'repetitions': 1
   });
 
+  /*
   useEffect(() => {
     console.log(formValues);
   }, [formValues]);
-
+  */
+ 
   return (
     <form onSubmit={handleSubmit}>
       <ul>
