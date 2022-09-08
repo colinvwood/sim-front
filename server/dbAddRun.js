@@ -2,7 +2,7 @@ import sqlite3 from 'sqlite3';
 
 function dbAddRun(form) {
 
-  const db = new sqlite3.Database('../db/simulation.db', sqlite3.OPEN_READWRITE);
+  const db = new sqlite3.Database('/var/www/html/sim-front/db/simulation.db');
 
   var sql = 
     `INSERT INTO 
@@ -14,7 +14,11 @@ function dbAddRun(form) {
                 ${form['bottleneck']});
     `;
 
-  db.run(sql);
+  db.run(sql, function() {
+    console.log("inserted row id: ", this.lastID);
+  });
+
+  db.close();
   
 }
 

@@ -24,4 +24,4 @@ yarn-error.log*
 
 
 # database
-db/
+db/simulation.db

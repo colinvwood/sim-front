@@ -3,7 +3,7 @@ import cors from 'cors';
 
 
 import vpnConnect from './vpnConnect.js';
-import addRun from './dbAddRun.js';
+import dbAddRun from './dbAddRun.js';
 
 const app = express();
 app.use(express.json());
