@@ -3,6 +3,7 @@ import cors from 'cors';
 
 
 import vpnConnect from './vpnConnect.js';
+import addRun from './dbAddRun.js';
 
 const app = express();
 app.use(express.json());
@@ -23,6 +24,7 @@ app.post('/express/sim-new', (req, res) => {
         data: req.body,
     });
     console.log(req.body);
+    dbAddRun(req.body);
 });
 
 app.post('/express/login', (req, res) => {
