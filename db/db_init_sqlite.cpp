@@ -8,7 +8,7 @@ int main() {
     sqlite3 *db;
     int status;
 
-    status = sqlite3_open("simulation.db", &db);
+    status = sqlite3_open("simulation.sqlite.db", &db);
     if (status) {
         printf("error creating database\n");
         exit(-1);
