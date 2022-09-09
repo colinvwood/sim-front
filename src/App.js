@@ -1,8 +1,8 @@
 import { Link, Routes, Route } from "react-router-dom";
 
-import Home from './components/home.component';
-import Sim from './components/sim/sim.component';
-import Data from './components/data/data.component';
+import Home from './components/home.component.jsx';
+import Sim from './components/sim/sim.component.jsx';
+import Data from './components/data/data.component.jsx';
 
 export default function App() {
   return (

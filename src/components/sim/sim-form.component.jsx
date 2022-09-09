@@ -15,7 +15,7 @@ const SimForm = (props) => {
     console.log(formValues);
   }, [formValues]);
   */
- 
+
   return (
     <form onSubmit={handleSubmit}>
       <ul>
@@ -137,7 +137,50 @@ const SimForm = (props) => {
           />
         </li>
 
+        <h3>
+          In order to run the simulation on monsoon you have to login to the
+          vpn using your NAU credentials:
+        </h3>
 
+        <li>
+          <label htmlFor="username">
+          Username:
+          </label>
+          <input
+            type="text"
+            name="username"
+            value={formValues['username'] ? formValues['username'] : ''}
+            onChange={handleInputChange} 
+            required
+          />
+        </li>
+        
+        <li>
+          <label htmlFor="password">
+            Password:
+          </label>
+          <input
+            type="password"
+            name="password"
+            value={formValues['password'] ? formValues['password'] : ''}
+            onChange={handleInputChange} 
+            required
+          />
+        </li>
+      
+        <li>
+          <label htmlFor="twoFactor">
+            Two factor authentication (6-digit code or push):
+          </label>
+          <input
+            type="text"
+            name="twoFactor"
+            value={formValues['twoFactor'] ? formValues['twoFactor'] : ''}
+            onChange={handleInputChange} 
+            required
+          />
+        </li>
+      
         <input type="submit" value="Submit" />
       </ul>
     </form>
