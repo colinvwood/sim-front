@@ -36,6 +36,7 @@ async function dbAddRun(form) {
   }
 
   await client.end();
+  return run_id;
 }
 
 export default dbAddRun;

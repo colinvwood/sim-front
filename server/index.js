@@ -4,6 +4,7 @@ import cors from 'cors';
 
 import vpnConnect from './vpnConnect.js';
 import dbAddRun from './dbAddRun.js';
+import startRun from './startRun.js';
 
 const app = express();
 app.use(express.json());
@@ -19,12 +20,9 @@ app.get('/express/api', (req, res) => {
 });
 
 app.post('/express/sim-new', (req, res) => {
-    res.json({
-        message: 'post request recieved',
-        data: req.body,
-    });
-    console.log(req.body);
-    dbAddRun(req.body);
+    const run_id = dbAddRun(req.body);
+    startRun(req.body, run_id);
+    res.status(200);
 });
 
 app.post('/express/login', (req, res) => {
