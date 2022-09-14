@@ -4,53 +4,61 @@ import { useState, useEffect } from 'react';
 
 const Data = (props) => {
 
-  const [formValues, setFormValues] = useState({});
+  const [simName, setSimName] = useState('');
+  const [recentNumber, setRecentNumber] = useState(5);
 
   return(
 
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="username">
-        Username:
-      </label>
-      <input
-        type="text"
-        name="username"
-        value={formValues['username'] ? formValues['username'] : ''}
-        onChange={handleInputChange} 
-        required
-      />
+    
+    <div>
+      <h1>
+      Retrieve simulation data.
+      </h1>
+      <p>
+        Check the status of a simulation or retreive the output of a 
+        completed simulation.
+      </p>
 
-      <label htmlFor="password">
-        Password:
-      </label>
-      <input
-        type="password"
-        name="password"
-        value={formValues['password'] ? formValues['password'] : ''}
-        onChange={handleInputChange} 
-        required
-      />
+      <form onSubmit={handleSimNameSubmit}>
+        <label htmlFor="simName">
+          Search by name of simulation: 
+        </label>
+        <input
+          type="text"
+          name="name"
+          value={simName}
+          onChange={handleSimNameChange} 
+          required
+        />
 
-      <label htmlFor="twoFactor">
-        Two factor authentication (6-digit code or push):
-      </label>
-      <input
-        type="text"
-        name="twoFactor"
-        value={formValues['twoFactor'] ? formValues['twoFactor'] : ''}
-        onChange={handleInputChange} 
-        required
-      />
+        <input type="submit" value="submit" />
+      </form>
 
-      <input type="submit" value="submit" />
-    </form>
+      <p>(Or)</p>
+
+      <form onSubmit={handleRecentNumberSubmit}>
+        <label htmlFor="recentNumber">
+          Retreive the n most recently submitted simulations, n:  
+        </label>
+        <input 
+          type="number" 
+          name="recentNumber" 
+          value={recentNumber} 
+          onChange={handleRecentNumChange} 
+        />
+
+        <input type="submit" value="submit" />
+      </form>
+
+    </div>
+    
   )
 
-  async function handleSubmit(event) {
+  async function handleSimNameSubmit(event) {
     event.preventDefault();
     const response = await fetch('https://www.colinwood.dev/express/login', {
       method: 'POST', 
-      body: JSON.stringify(formValues),
+      body: { 'simName': simName },
       headers: {
         'Content-Type': 'application/json'
       },  
@@ -59,9 +67,27 @@ const Data = (props) => {
     // handle errors
   }
 
-  async function handleInputChange(event) {
+  async function handleRecentNumberSubmit(event) {
     event.preventDefault();
-    setFormValues({ ...formValues, [event.target.name]: event.target.value });
+    const response = await fetch('https://www.colinwood.dev/express/login', {
+      method: 'POST', 
+      body: { 'recentNumber': recentNumber },
+      headers: {
+        'Content-Type': 'application/json'
+      },  
+    });
+    
+    // handle errors
+  }
+
+  async function handleSimNameChange(event) {
+    event.preventDefault();
+    setSimName(event.target.value);
+  }
+
+  async function handleRecentNumChange(event) {
+    event.preventDefault();
+    setRecentNumber(event.target.value);
   }
 
 

@@ -92,7 +92,7 @@ const SimForm = (props) => {
           <input
             type="number"
             name="sampleSize"
-            value={formValues['sampleSize'] ? formValues['sampelSize'] : ''}
+            value={formValues['sampleSize'] ? formValues['sampleSize'] : ''}
             onChange={handleInputChange} 
             required
           />
