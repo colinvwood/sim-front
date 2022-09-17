@@ -18,8 +18,8 @@ async function dbAddRun(form) {
   var res = await client.query(sql);
   const parameters_id = res.rows[0]['parameters_id'];
 
-  sql = `INSERT INTO run (name, date, parameters_id) VALUES ('${form['name']}', '${new Date()}', ${parameters_id}) 
-         RETURNING run_id;`;
+  sql = `INSERT INTO run (name, date, parameters_id) VALUES ('${form['name'].toLowerCase()}', '${new Date()}', 
+          ${parameters_id}) RETURNING run_id;`;
   res = await client.query(sql);
   const run_id = res.rows[0]['run_id'];
 

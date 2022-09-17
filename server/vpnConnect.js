@@ -1,9 +1,14 @@
 import { spawn } from 'child_process';
+import { processExists } from 'process-exists';
 import * as fs from 'fs';
 
-function vpnConnect(username, password, twoFactor) {
+async function vpnConnect(form) {
 
-    const details = username + '\n' + password + '\n' + twoFactor + '\n';
+    if (await processExists('openconnect')) {
+        return 0;
+    }
+
+    const details = form['username'] + '\n' + form['password'] + '\n' + form['twoFactor'] + '\n';
     const printf = spawn('printf', [details], {
         stdio: ['ignore', 'pipe', 'ignore'],
         detach: true

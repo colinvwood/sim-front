@@ -4,6 +4,7 @@ import cors from 'cors';
 
 import vpnConnect from './vpnConnect.js';
 import dbAddRun from './dbAddRun.js';
+import dbRetrieveName from './dbRetrieveName.js';
 import startRun from './startRun.js';
 
 const app = express();
@@ -19,19 +20,33 @@ app.get('/express/api', (req, res) => {
     res.json({message: "hello from express"});
 });
 
-app.post('/express/sim-new', (req, res) => {
-    const run_id = dbAddRun(req.body);
-    startRun(req.body, run_id);
-    res.status(200);
-});
+app.post('/express/sim-new', async (req, res) => {
+    // update db
+    const run_id = await dbAddRun(req.body);
+    console.log('added run to db');
 
-app.post('/express/login', (req, res) => {
-    res.status(200);
+    // connect to vpn
+    const pid = await vpnConnect(req.body);
+    console.log('connected to vpn, pid: ', pid);
+
     console.log(req.body);
-    const pid = vpnConnect(req.body.username, req.body.password, req.body.twoFactor);
-    console.log('pid is: ', pid);
+    // run sim on monsoon
+    startRun(req.body, run_id);
+    console.log('started run on monsoon');
+
+    res.status(200);
 });
 
+app.post('/express/retrieve-name', async (req, res) => {
+  console.log(req.body);
+  await dbRetrieveName(req.body['simName']);    
+
+
+});
+
+app.post('/express/retrieve-number', (req, res) => {
+
+});
 
 
 
