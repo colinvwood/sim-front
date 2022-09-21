@@ -23,7 +23,8 @@ async function dbRetrieveName(name) {
     var repResults = await client.query(sql);
     runResults.rows[i]['repetitions'] = repResults.rows.length;
   }
-  console.log(runResults.rows);
+
+  return runRestuls.rows;
 }
 
 export default dbRetrieveName;
