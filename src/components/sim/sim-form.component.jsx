@@ -7,7 +7,9 @@ const SimForm = (props) => {
   const [formValues, setFormValues] = useState({
     'mutationRate': 1.6 * 10 ** -10,
     'genomeSize': 2800000,
-    'repetitions': 1
+    'capacity': 100000,
+    'repetitions': 1,
+    'combos': "1"
   });
 
   /*
@@ -39,7 +41,7 @@ const SimForm = (props) => {
           <input
             type="number"
             name="srcGen"
-            value={formValues['srcGen'] ? formValues['srcGen'] : ''}
+            value={formValues['srcGen'] ? formValues['srcGen'] : null}
             onChange={handleInputChange} 
             required
           />
@@ -52,7 +54,7 @@ const SimForm = (props) => {
           <input
             type="number"
             name="recGen"
-            value={formValues['recGen'] ? formValues['recGen'] : ''}
+            value={formValues['recGen'] ? formValues['recGen'] : null}
             onChange={handleInputChange} 
             required
           />
@@ -65,7 +67,7 @@ const SimForm = (props) => {
           <input
             type="number"
             name="bottleneck"
-            value={formValues['bottleneck'] ? formValues['bottleneck'] : ''}
+            value={formValues['bottleneck'] ? formValues['bottleneck'] : null}
             onChange={handleInputChange} 
             required
           />
@@ -78,7 +80,7 @@ const SimForm = (props) => {
           <input
             type="number"
             name="capacity"
-            value={formValues['capacity'] ? formValues['capacity'] : ''}
+            value={formValues['capacity'] ? formValues['capacity'] : null}
             onChange={handleInputChange} 
             required
           />
@@ -92,7 +94,7 @@ const SimForm = (props) => {
           <input
             type="number"
             name="sampleSize"
-            value={formValues['sampleSize'] ? formValues['sampleSize'] : ''}
+            value={formValues['sampleSize'] ? formValues['sampleSize'] : null}
             onChange={handleInputChange} 
             required
           />
@@ -100,12 +102,12 @@ const SimForm = (props) => {
 
         <li>
           <label htmlFor="genomeSize">
-            Each population's carrying capacity: 
+            The genome length of each individual:
           </label>
           <input
             type="number"
             name="genomeSize"
-            value={formValues['genomeSize'] ? formValues['genomeSize'] : ''}
+            value={formValues['genomeSize'] ? formValues['genomeSize'] : null}
             onChange={handleInputChange} 
             required
           />
@@ -113,12 +115,26 @@ const SimForm = (props) => {
 
         <li>
           <label htmlFor="mutationRate">
-            The population's mutation rate (mutations per site per generation):
+            The mutation rate (mutations per site per generation):
           </label>
           <input
             type="number"
             name="mutationRate"
-            value={formValues['mutationRate'] ? formValues['mutationRate'] : ''}
+            value={formValues['mutationRate'] ? formValues['mutationRate'] : null}
+            onChange={handleInputChange} 
+            required
+          />
+        </li>
+
+        <li>
+          <label htmlFor="combos">
+            The combination sizes to use during Tier 1 and Tier 2 analyses. 
+            Enter a single number or a list (e.g. 1,2,3) 
+          </label>
+          <input
+            type="text"
+            name="combos"
+            value={formValues['combos'] ? formValues['combos'] : null}
             onChange={handleInputChange} 
             required
           />
@@ -126,12 +142,13 @@ const SimForm = (props) => {
 
         <li>
           <label htmlFor="repetitions">
-            The number of independent simulations with the above parameters: 
+            The number of independent simulations to run with the above 
+            parameters: 
           </label>
           <input
             type="number"
             name="repetitions"
-            value={formValues['repetitions'] ? formValues['repetitions'] : ''}
+            value={formValues['repetitions'] ? formValues['repetitions'] : null}
             onChange={handleInputChange} 
             required
           />

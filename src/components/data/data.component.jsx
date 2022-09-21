@@ -1,4 +1,5 @@
 import './data.styles.css';
+import Run from './run.component.jsx';
 
 import { useState, useEffect } from 'react';
 
@@ -50,15 +51,17 @@ const Data = (props) => {
         <input type="submit" value="submit" />
       </form>
 
+      <Run data={ {name: "thurs", id: 1, srcGen: 100} } />
+
     </div>
     
   )
 
   async function handleSimNameSubmit(event) {
     event.preventDefault();
-    const response = await fetch('https://www.colinwood.dev/express/login', {
+    const response = await fetch('https://www.colinwood.dev/express/retrieve-name', {
       method: 'POST', 
-      body: { 'simName': simName },
+      body: JSON.stringify( { simName: simName } ),
       headers: {
         'Content-Type': 'application/json'
       },  
@@ -69,9 +72,9 @@ const Data = (props) => {
 
   async function handleRecentNumberSubmit(event) {
     event.preventDefault();
-    const response = await fetch('https://www.colinwood.dev/express/login', {
+    const response = await fetch('https://www.colinwood.dev/express/retrieve-number', {
       method: 'POST', 
-      body: { 'recentNumber': recentNumber },
+      body: JSON.stringify( { recentNumber: recentNumber } ),
       headers: {
         'Content-Type': 'application/json'
       },  

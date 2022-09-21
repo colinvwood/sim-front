@@ -1,0 +1,14 @@
+.runData {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-around;
+
+}
+
+.runValue {
+  display: inline-block;
+  padding: 5px 15px;
+  border: 1px solid black;
+
+}
