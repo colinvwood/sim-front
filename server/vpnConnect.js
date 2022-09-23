@@ -1,10 +1,10 @@
 import { spawn } from 'child_process';
-import { processExists } from 'process-exists';
 import * as fs from 'fs';
+import checkVpn from './checkVpn.js';
 
 async function vpnConnect(form) {
 
-    if (await processExists('openconnect')) {
+    if (await checkVpn()) {
         return 0;
     }
 
@@ -13,12 +13,14 @@ async function vpnConnect(form) {
         stdio: ['ignore', 'pipe', 'ignore'],
         detach: true
     });
+    printf.unref();
 
     const out = fs.openSync('out.txt', 'a');
     const openconnect = spawn('openconnect', ['vpn.nau.edu'], {
         stdio: [printf.stdout, out, 'ignore'], 
         detach: true
     });
+    openconnect.unref();
 
     var connected = false;
     while (!connected) {
@@ -40,7 +42,6 @@ async function vpnConnect(form) {
     });
     
     const pid = openconnect.pid;
-    openconnect.unref();
 
     return pid;
 }

@@ -1,4 +1,5 @@
 import pg from 'pg';
+import checkRunStatus from './checkRunStatus.js';
 const Client = pg.Client;
 
 async function dbRetrieveName(name) {
@@ -24,7 +25,8 @@ async function dbRetrieveName(name) {
     runResults.rows[i]['repetitions'] = repResults.rows.length;
   }
 
-  return runRestuls.rows;
+  checkRunStatus(51, 1);
+  return runResults.rows;
 }
 
 export default dbRetrieveName;

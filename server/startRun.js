@@ -1,8 +1,8 @@
 import { spawn, execSync } from 'child_process';
 import * as fs from 'fs';
 
-function startRun(form, runId) {
-  
+async function startRun(form, runId) {
+
   // create run directory on monsoon
   const path = '/projects/pearson_lab/trans_simulation';
   const monsoon = 'cvw29@monsoon.hpc.nau.edu';
@@ -22,11 +22,11 @@ function startRun(form, runId) {
     "sample size": parseInt( form['sampleSize'] ),
     "combo sizes": form['combos'].split(',').map(n => parseInt(n))
   }
-  const configFile = '/var/www/html/sim-front/run-' + runId + '-config.json'; 
+  const configFile = `/var/www/html/sim-front/run-${runId}-config.json`; 
   fs.writeFileSync(configFile, JSON.stringify(config));
 
   // copy config file to monsoon
-  const configPath = `${monsoon}:${path}/runs/run-${runId}/`;
+  const configPath = `${monsoon}:${path}/runs/run-${runId}/run-${runId}-config.json`;
   execSync(`scp ${configFile} ${configPath}`);
 
   // begin simulation on monsoon
@@ -37,7 +37,6 @@ function startRun(form, runId) {
     startCommand = `sbatch ${path}/run_single.sh ${path}/runs/run-${runId}/run-${runId}-config.json`;
   }
   execSync(`ssh ${monsoon} ${startCommand}`);
-
 
   execSync(`rm ${configFile}`);
 }
