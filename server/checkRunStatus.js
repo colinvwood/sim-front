@@ -10,14 +10,15 @@ function checkRunStatus(runId, repetitions) {
       encoding: 'utf8'
     });
     console.log("files: ", files);
+
+    if (files.length == repetitions + 1) {
+      return 'finished';
+    }
+    return 'in progress';
   }
   catch (error) {
-    console.log('dir does not exist: ', error);
+    return 'not found';
   }
-
-  
-  
-  
 
 }
 

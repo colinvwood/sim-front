@@ -13,11 +13,10 @@ async function dbRetrieveName(name) {
   await client.connect();
 
   var sql = `SELECT run.date, run.run_id, parameters.source_generations, parameters.recipient_generations,
-              parameters.bottleneck FROM run 
+              parameters.bottleneck, parameters.combinations FROM run 
              INNER JOIN parameters ON run.parameters_id = parameters.parameters_id 
              WHERE run.name='${name.toLowerCase()}';`;
   const runResults = await client.query(sql);
-  console.log(runResults.rows);
 
   for (let i = 0; i < runResults.rows.length; i++) {
     sql = `SELECT * FROM repetition WHERE run_id=${runResults.rows[i]['run_id']}`;
@@ -25,7 +24,13 @@ async function dbRetrieveName(name) {
     runResults.rows[i]['repetitions'] = repResults.rows.length;
   }
 
-  checkRunStatus(51, 1);
+  for (let i = 0; i < runResults.rows.length; i++) {
+    var run_id = runResults.rows[i]['run_id'];
+    var repetitions = runResults.rows[i]['repetitions'];
+    var status = checkRunStatus(run_id, repetitions);
+    runResults.rows[i]['status'] = status;
+  }
+  
   return runResults.rows;
 }
 

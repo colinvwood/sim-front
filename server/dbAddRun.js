@@ -12,14 +12,17 @@ async function dbAddRun(form) {
   await client.connect();
 
   var sql = `INSERT INTO parameters (source_generations, recipient_generations, carrying_capacity, 
-              mutation_rate, genome_size, bottleneck) 
+              mutation_rate, genome_size, bottleneck, combinations) 
              VALUES (${form['srcGen']}, ${form['recGen']}, ${form['capacity']}, ${form['mutationRate']}, 
-              ${form['genomeSize']}, ${form['bottleneck']}) RETURNING parameters_id;`;
+              ${form['genomeSize']}, ${form['bottleneck']}, '${form['combos']}') 
+             RETURNING parameters_id;`;
+
   var res = await client.query(sql);
   const parameters_id = res.rows[0]['parameters_id'];
 
-  sql = `INSERT INTO run (name, date, parameters_id) VALUES ('${form['name'].toLowerCase()}', '${new Date()}', 
-          ${parameters_id}) RETURNING run_id;`;
+  sql = `INSERT INTO run (name, date, parameters_id) 
+          VALUES ('${form['name'].toLowerCase()}', '${new Date()}', ${parameters_id}) 
+         RETURNING run_id;`;
   res = await client.query(sql);
   const run_id = res.rows[0]['run_id'];
 

@@ -10,14 +10,21 @@ const client = new Client({
 await client.connect();
 
 const tables_sql = 
-    `CREATE TABLE parameters(
+    `
+    DROP TABLE IF EXISTS parameters CASCADE;
+    DROP TABLE IF EXISTS run CASCADE;
+    DROP TABLE IF EXISTS stats CASCADE;
+    DROP TABLE IF EXISTS repetition;
+
+    CREATE TABLE parameters(
         parameters_id SERIAL PRIMARY KEY, 
         source_generations INTEGER, 
         recipient_generations INTEGER, 
         carrying_capacity INTEGER, 
         mutation_rate REAL, 
         genome_size INTEGER,  
-        bottleneck INTEGER
+        bottleneck INTEGER,
+        combinations TEXT
     );
 
     CREATE TABLE run(

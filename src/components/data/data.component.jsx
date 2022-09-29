@@ -7,10 +7,19 @@ const Data = (props) => {
 
   const [simName, setSimName] = useState('');
   const [recentNumber, setRecentNumber] = useState(5);
+  const [rows, setRows] = useState([]);
+  const [runs, setRuns] = useState([]);
+
+  useEffect(() => {
+    var key = 0;
+    var tempRuns = [];
+    for (var row of rows) {
+      tempRuns = [...tempRuns, <Run data={row} key={key++} />];
+    }
+    setRuns(tempRuns);
+  }, [rows]);
 
   return(
-
-    
     <div>
       <h1>
       Retrieve simulation data.
@@ -51,7 +60,7 @@ const Data = (props) => {
         <input type="submit" value="submit" />
       </form>
 
-      <Run data={ {name: "thurs", id: 1, srcGen: 100} } />
+      {runs}
 
     </div>
     
@@ -67,6 +76,10 @@ const Data = (props) => {
       },  
     });
     
+    const records = await response.json();
+    const rows = records.records;
+    setRows(rows);
+
     // handle errors
   }
 
