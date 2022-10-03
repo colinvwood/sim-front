@@ -2,7 +2,7 @@ import pg from 'pg';
 import checkRunStatus from './checkRunStatus.js';
 const Client = pg.Client;
 
-async function dbRetrieveName(name) {
+export default async function dbRetrieve(name, recentNumber) {
 
   const client = new Client({
     host: 'localhost',
@@ -12,11 +12,22 @@ async function dbRetrieveName(name) {
   });
   await client.connect();
 
-  var sql = `SELECT run.date, run.run_id, parameters.source_generations, parameters.recipient_generations,
+  var runResults;
+  var sql;
+  if (name) {
+    sql = `SELECT run.date, run.run_id, parameters.source_generations, parameters.recipient_generations,
               parameters.bottleneck, parameters.combinations FROM run 
              INNER JOIN parameters ON run.parameters_id = parameters.parameters_id 
              WHERE run.name='${name.toLowerCase()}';`;
-  const runResults = await client.query(sql);
+    runResults = await client.query(sql);
+  } else if (recentNumber) {
+    sql = `SELECT run.date, run.run_id, parameters.source_generations, parameters.recipient_generations,
+              parameters.bottleneck, parameters.combinations FROM run 
+             INNER JOIN parameters ON run.parameters_id = parameters.parameters_id 
+             ORDER BY run_id DESC LIMIT ${recentNumber};`;
+    runResults = await client.query(sql);
+  }
+  
 
   for (let i = 0; i < runResults.rows.length; i++) {
     sql = `SELECT * FROM repetition WHERE run_id=${runResults.rows[i]['run_id']}`;
@@ -34,4 +45,3 @@ async function dbRetrieveName(name) {
   return runResults.rows;
 }
 
-export default dbRetrieveName;

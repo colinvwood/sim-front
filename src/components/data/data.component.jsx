@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 const Data = (props) => {
 
   const [simName, setSimName] = useState('');
-  const [recentNumber, setRecentNumber] = useState(5);
+  const [recentNumber, setRecentNumber] = useState(0);
   const [rows, setRows] = useState([]);
   const [runs, setRuns] = useState([]);
 
@@ -29,34 +29,33 @@ const Data = (props) => {
         completed simulation.
       </p>
 
-      <form onSubmit={handleSimNameSubmit}>
-        <label htmlFor="simName">
-          Search by name of simulation: 
-        </label>
-        <input
-          type="text"
-          name="name"
-          value={simName}
-          onChange={handleSimNameChange} 
-          required
-        />
-
-        <input type="submit" value="submit" />
-      </form>
-
-      <p>(Or)</p>
-
-      <form onSubmit={handleRecentNumberSubmit}>
-        <label htmlFor="recentNumber">
-          Retreive the n most recently submitted simulations, n:  
-        </label>
-        <input 
-          type="number" 
-          name="recentNumber" 
-          value={recentNumber} 
-          onChange={handleRecentNumChange} 
-        />
-
+      <form name="nameForm" onSubmit={handleRetrieveSubmit}>
+        <ul>
+          <li>
+            <label htmlFor="simName">
+              Search by name of simulation: 
+            </label>
+            <input
+              type="text"
+              name="simName"
+              value={simName}
+              onChange={handleSimNameChange} 
+            />
+          </li>
+          <p>(Or)</p>
+          <li>
+            <label htmlFor="recentNumber">
+              Retreive the n most recently submitted simulations, n:  
+            </label>
+            <input 
+              type="number" 
+              name="recentNumber" 
+              value={recentNumber} 
+              onChange={handleRecentNumChange}
+            />
+          </li>
+        </ul>
+        
         <input type="submit" value="submit" />
       </form>
 
@@ -66,34 +65,31 @@ const Data = (props) => {
     
   )
 
-  async function handleSimNameSubmit(event) {
+  async function handleRetrieveSubmit(event) {
     event.preventDefault();
-    const response = await fetch('https://www.colinwood.dev/express/retrieve-name', {
-      method: 'POST', 
-      body: JSON.stringify( { simName: simName } ),
-      headers: {
-        'Content-Type': 'application/json'
-      },  
-    });
-    
-    const records = await response.json();
-    const rows = records.records;
-    setRows(rows);
 
-    // handle errors
-  }
+    var body;
+    if (simName) {
+      body = JSON.stringify( { simName: simName } );
+    } else if (recentNumber) {
+      body = JSON.stringify( { recentNumber: recentNumber } );
+    }
 
-  async function handleRecentNumberSubmit(event) {
-    event.preventDefault();
-    const response = await fetch('https://www.colinwood.dev/express/retrieve-number', {
-      method: 'POST', 
-      body: JSON.stringify( { recentNumber: recentNumber } ),
-      headers: {
-        'Content-Type': 'application/json'
-      },  
-    });
-    
-    // handle errors
+    try {
+      const response = await fetch('https://www.colinwood.dev/express/retrieve-records', {
+        method: 'POST', 
+        body: body,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+      const records = await response.json();
+      const rows = records.records;
+      setRows(rows);
+
+    } catch (error) {
+      console.log("Error fetching records.");
+    }
   }
 
   async function handleSimNameChange(event) {

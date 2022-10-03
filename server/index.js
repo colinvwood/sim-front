@@ -4,7 +4,7 @@ import * as fs from 'fs';
 
 import vpnConnect from './vpnConnect.js';
 import dbAddRun from './dbAddRun.js';
-import dbRetrieveName from './dbRetrieveName.js';
+import dbRetrieve from './dbRetrieve.js';
 import startRun from './startRun.js';
 import checkVpn from './checkVpn.js';
 import { retrieveRunStats, statsToCsv } from './retrieveRunStats.js';
@@ -41,16 +41,19 @@ app.post('/express/sim-new', async (req, res) => {
     res.status(200);
 });
 
-app.post('/express/retrieve-name', async (req, res) => {
-  const records = await dbRetrieveName(req.body['simName']);
-  res.json( {records: records} );  
-  
-});
-
-
-
-app.post('/express/retrieve-number', (req, res) => {
-
+app.post('/express/retrieve-records', async (req, res) => {
+    console.log("in retrieve records");
+    console.log("body:  ", req.body);
+    let records;
+    if (req.body['simName']) {
+        console.log("name retrieve");
+        records = await dbRetrieve(req.body['simName'], null);
+    } else if (req.body['recentNumber']) {
+        console.log("number retrieve");
+        records = await dbRetrieve(null, req.body['recentNumber']);
+    }
+    
+    res.json({ records: records });  
 });
 
 app.post('/express/retrieve-stats', async (req, res) => {
