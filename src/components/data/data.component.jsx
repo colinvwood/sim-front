@@ -1,6 +1,7 @@
 import './data.styles.css';
 import Run from './run.component.jsx';
 import VpnStatus from '../additional/vpn-status.component.jsx';
+import LoadingAnimation from '../additional/loading-animation.component.jsx';
 
 import { useState, useEffect } from 'react';
 
@@ -10,7 +11,7 @@ const Data = (props) => {
   const [recentNumber, setRecentNumber] = useState(0);
   const [rows, setRows] = useState([]);
   const [runs, setRuns] = useState([]);
-  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     var key = 0;
@@ -64,7 +65,10 @@ const Data = (props) => {
         <button onClick={clearForm}>
           Reset
         </button>
+        <LoadingAnimation loading={loading} />
       </form>
+
+      {runs}
 
     </div>
     
@@ -72,6 +76,7 @@ const Data = (props) => {
 
   async function handleRetrieveSubmit(event) {
     event.preventDefault();
+    setLoading(true);
 
     var body;
     if (simName) {
@@ -92,11 +97,12 @@ const Data = (props) => {
       const rows = records.records;
       setRows(rows);
 
-      setSubmitted(true);
+      setLoading(false);
       clearForm(event);
 
     } catch (error) {
-      console.log("Error fetching records.");
+      setLoading(false);
+      console.log("Error fetching records. ", error);
     }
     
   }

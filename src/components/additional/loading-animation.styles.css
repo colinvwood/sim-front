@@ -1,0 +1,19 @@
+.loading-animation {
+  margin-left: 10px;
+  margin-top: 15px;
+  border: 6px solid #EAF0F6;
+  border-radius: 50%;
+  border-top: 6px solid black;
+  width: 20px;
+  height: 20px;
+  animation: spinner 2s linear infinite;
+}
+
+@keyframes spinner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+p {
+  font-size: 14px;
+}

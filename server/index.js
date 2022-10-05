@@ -40,6 +40,7 @@ app.post('/express/sim-new', async (req, res) => {
     console.log('started run on monsoon');
 
     res.status(200);
+    res.end();
 });
 
 app.post('/express/retrieve-records', async (req, res) => {

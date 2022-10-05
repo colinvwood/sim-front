@@ -1,6 +1,7 @@
 import './sim-form.styles.css';
 import VpnStatus from '../additional/vpn-status.component.jsx';
 import FormSubmissionStatus from './form-submission.component.jsx';
+import LoadingAnimation from '../additional/loading-animation.component.jsx';
 
 import { useState } from 'react';
 
@@ -15,6 +16,7 @@ const SimForm = (props) => {
     'combos': "1"
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
   return (
@@ -160,14 +162,18 @@ const SimForm = (props) => {
           <button onClick={clearForm}>
             Reset
           </button>
+          <LoadingAnimation loading={loading} />
         </ul>
       </form>
+      
       <FormSubmissionStatus submissionStatus={submitted} />
     </div>
   )
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setLoading(true);
+
     try {
       const response = await fetch('https://www.colinwood.dev/express/sim-new', {
         method: 'POST', 
@@ -177,9 +183,11 @@ const SimForm = (props) => {
         },  
       });
 
+      setLoading(false);
       setSubmitted(true);
       clearForm(event);
     } catch (error) {
+      setLoading(false);
       console.log("Error submitting new simulation form. ", error);
     }
   }
