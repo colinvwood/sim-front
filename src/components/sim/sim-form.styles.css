@@ -1,4 +1,11 @@
-#warning {
+#connected-message {
+  display: inline-block;
+  background-color: lightgreen;
+  padding: 1px 15px;
+  margin-left: 10px;
+}
+
+#not-connected-message {
   display: inline-block;
   background-color: orange;
   padding: 1px 15px;

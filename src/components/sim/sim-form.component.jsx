@@ -1,7 +1,9 @@
 import './sim-form.styles.css';
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+
+
+import VpnStatus from '../vpn-status/vpn-status.component.jsx';
 
 const SimForm = (props) => {
 
@@ -13,36 +15,13 @@ const SimForm = (props) => {
     'combos': "1"
   });
 
-  const [vpnStatus, setVpnStatus] = useState(true);
-
   
-  useEffect(() => {
-    const checkVpn = async () => {
-      var response = await fetch('https://www.colinwood.dev/express/check-vpn', {
-        method: 'GET',   
-      });
-      response = await response.json();
-      var vpnIsConnected = response.vpnStatus;
-      if (!vpnIsConnected) {
-        setVpnStatus(false);
-      }
-    }
-
-    checkVpn();
-  }, []);
   
 
   return (
     <div>
-      {!vpnStatus && 
-        <span id="warning">
-          <p>You are not logged into the vpn. Please do that first{' '}
-          <Link to="/vpn-connect"> 
-            here.
-          </Link>
-          </p>
-        </span>
-      }
+      <VpnStatus />
+
       <form onSubmit={handleSubmit}>
         <ul>
           <li>
