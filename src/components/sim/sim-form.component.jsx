@@ -1,9 +1,8 @@
 import './sim-form.styles.css';
-
-import { useState, useEffect } from 'react';
-
-
 import VpnStatus from '../vpn-status/vpn-status.component.jsx';
+
+import { useState } from 'react';
+
 
 const SimForm = (props) => {
 
@@ -15,8 +14,6 @@ const SimForm = (props) => {
     'combos': "1"
   });
 
-  
-  
 
   return (
     <div>
@@ -158,6 +155,9 @@ const SimForm = (props) => {
           </li>
         
           <input type="submit" value="Submit" />
+          <button onClick={clearForm}>
+            Reset
+          </button>
         </ul>
       </form>
     </div>
@@ -165,23 +165,35 @@ const SimForm = (props) => {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const response = await fetch('https://www.colinwood.dev/express/sim-new', {
-      method: 'POST', 
-      body: JSON.stringify(formValues),
-      headers: {
-        'Content-Type': 'application/json'
-      },  
-    });
-    
-    // handle errors
+    try {
+      const response = await fetch('https://www.colinwood.dev/express/sim-new', {
+        method: 'POST', 
+        body: JSON.stringify(formValues),
+        headers: {
+          'Content-Type': 'application/json'
+        },  
+      });
+    } catch (error) {
+      console.log("Error submitting new simuulation form.")
+    }
   }
 
   async function handleInputChange(event) {
     event.preventDefault();
     setFormValues({ ...formValues, [event.target.name]: event.target.value });
   }
+
+  async function clearForm(event) {
+    event.preventDefault();
+    setFormValues({
+      'mutationRate': 1.6 * 10 ** -10,
+      'genomeSize': 2800000,
+      'capacity': 100000,
+      'repetitions': 1,
+      'combos': "1"
+    });
+  }
+
 }
-
-
 
 export default SimForm;

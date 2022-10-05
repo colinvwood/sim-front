@@ -1,5 +1,6 @@
 import './data.styles.css';
 import Run from './run.component.jsx';
+import VpnStatus from '../vpn-status/vpn-status.component.jsx';
 
 import { useState, useEffect } from 'react';
 
@@ -21,6 +22,8 @@ const Data = (props) => {
 
   return(
     <div>
+      <VpnStatus />
+
       <h1>
       Retrieve simulation data.
       </h1>
@@ -42,7 +45,7 @@ const Data = (props) => {
               onChange={handleSimNameChange} 
             />
           </li>
-          <p>(Or)</p>
+          <p><b>OR</b></p>
           <li>
             <label htmlFor="recentNumber">
               Retreive the n most recently submitted simulations, n:  
@@ -56,7 +59,10 @@ const Data = (props) => {
           </li>
         </ul>
         
-        <input type="submit" value="submit" />
+        <input type="submit" value="Submit" />
+        <button onClick={clearForm}>
+          Reset
+        </button>
       </form>
 
       {runs}
@@ -102,6 +108,11 @@ const Data = (props) => {
     setRecentNumber(event.target.value);
   }
 
+  async function clearForm(event) {
+    event.preventDefault();
+    setSimName('');
+    setRecentNumber(0);
+  }
 
 }
 

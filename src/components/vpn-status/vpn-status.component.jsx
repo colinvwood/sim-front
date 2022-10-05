@@ -20,7 +20,13 @@ const VpnStatus = (props) => {
       }
     }
 
-    checkVpn();
+    try {
+      checkVpn();
+    }
+    catch (error) {
+      console.log("Error checking vpn status. ", error);
+    }
+    
   }, []);
 
   // fetch has not completed yet
