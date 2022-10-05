@@ -27,6 +27,7 @@ app.post('/express/vpn-connect', async (req, res) => {
     console.log('connected to vpn, pid: ', pid);
 
     res.status(200);
+    res.end();
 });
 
 app.post('/express/sim-new', async (req, res) => {

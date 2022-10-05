@@ -1,5 +1,6 @@
 import './sim-form.styles.css';
-import VpnStatus from '../vpn-status/vpn-status.component.jsx';
+import VpnStatus from '../additional/vpn-status.component.jsx';
+import FormSubmissionStatus from './form-submission.component.jsx';
 
 import { useState } from 'react';
 
@@ -13,6 +14,7 @@ const SimForm = (props) => {
     'repetitions': 1,
     'combos': "1"
   });
+  const [submitted, setSubmitted] = useState(false);
 
 
   return (
@@ -160,6 +162,7 @@ const SimForm = (props) => {
           </button>
         </ul>
       </form>
+      <FormSubmissionStatus submissionStatus={submitted} />
     </div>
   )
 
@@ -173,8 +176,11 @@ const SimForm = (props) => {
           'Content-Type': 'application/json'
         },  
       });
+
+      setSubmitted(true);
+      clearForm(event);
     } catch (error) {
-      console.log("Error submitting new simuulation form.")
+      console.log("Error submitting new simulation form. ", error);
     }
   }
 

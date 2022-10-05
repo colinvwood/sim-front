@@ -1,6 +1,6 @@
 import './data.styles.css';
 import Run from './run.component.jsx';
-import VpnStatus from '../vpn-status/vpn-status.component.jsx';
+import VpnStatus from '../additional/vpn-status.component.jsx';
 
 import { useState, useEffect } from 'react';
 
@@ -10,6 +10,7 @@ const Data = (props) => {
   const [recentNumber, setRecentNumber] = useState(0);
   const [rows, setRows] = useState([]);
   const [runs, setRuns] = useState([]);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     var key = 0;
@@ -65,8 +66,6 @@ const Data = (props) => {
         </button>
       </form>
 
-      {runs}
-
     </div>
     
   )
@@ -93,9 +92,13 @@ const Data = (props) => {
       const rows = records.records;
       setRows(rows);
 
+      setSubmitted(true);
+      clearForm(event);
+
     } catch (error) {
       console.log("Error fetching records.");
     }
+    
   }
 
   async function handleSimNameChange(event) {
