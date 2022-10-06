@@ -22,8 +22,14 @@ async function vpnConnect(form) {
     });
     openconnect.unref();
 
+    var timeout = false;
     var connected = false;
-    while (!connected) {
+    var counter = 0;
+    while (!connected && !timeout) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        if  (counter++ > 10) {
+            timeout = true;
+        }
         var data = fs.readFileSync('out.txt');
         if (data) {
             var lines = data.toString().split("\n");
@@ -41,8 +47,11 @@ async function vpnConnect(form) {
         }
     });
     
-    const pid = openconnect.pid;
+    if (timeout) {
+        return -1;
+    }
 
+    const pid = openconnect.pid;
     return pid;
 }
 

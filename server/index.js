@@ -21,13 +21,19 @@ app.get('/express/check-vpn', async (req, res) => {
 });
 
 app.post('/express/vpn-connect', async (req, res) => {
-    // connect to vpn
     console.log('connecting to vpn');
     const pid = await vpnConnect(req.body);
     console.log('connected to vpn, pid: ', pid);
 
-    res.status(200);
-    res.end();
+    if (pid == -1) {
+        console.log("bad login");
+        res.json({ status: 'error' });
+        res.end();
+    } else {
+        console.log("good login");
+        res.json({ status: 'success' });
+        res.end();
+    }
 });
 
 app.post('/express/sim-new', async (req, res) => {

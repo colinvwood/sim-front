@@ -1,3 +1,5 @@
+import Notification from './notification.component.jsx';
+
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
@@ -36,22 +38,21 @@ const VpnStatus = (props) => {
 
   var message;
   if (vpnStatus == 1) {
-    message = (
-      <span id="connected-message">
-        <p>You are logged into the vpn.</p>
-      </span>
-    )
+    message = <Notification 
+                hide={false} 
+                message={"You are connected to the vpn."}
+                color={"green"}
+              />;
   } else if (vpnStatus == 0) {
-    message = (
-      <span id="not-connected-message">
-        <p>You are not logged into the vpn. Do that first{' '}
-          <Link to="/vpn-connect"> 
-           here.
-          </Link>
-        </p>
-      </span> 
-    );
+    const children = <p>Do that first <Link to="/vpn-connect">here.</Link></p>;
+    message = <Notification 
+                hide={false} 
+                message={"You are not connected to the vpn."}
+                color={"orange"}
+                children={children}
+              />;
   }
+  
 
   return (
     <div>

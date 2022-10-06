@@ -1,6 +1,6 @@
 import './sim-form.styles.css';
 import VpnStatus from '../additional/vpn-status.component.jsx';
-import FormSubmissionStatus from './form-submission.component.jsx';
+import Notification from '../additional/notification.component.jsx';
 import LoadingAnimation from '../additional/loading-animation.component.jsx';
 
 import { useState } from 'react';
@@ -166,7 +166,11 @@ const SimForm = (props) => {
         </ul>
       </form>
       
-      <FormSubmissionStatus submissionStatus={submitted} />
+      <Notification 
+        hide={!submitted} 
+        message={"Successfully submitted simulation"}
+        color={"green"}
+      />
     </div>
   )
 
@@ -199,6 +203,7 @@ const SimForm = (props) => {
 
   async function clearForm(event) {
     event.preventDefault();
+    setLoading(false);
     setFormValues({
       'mutationRate': 1.6 * 10 ** -10,
       'genomeSize': 2800000,

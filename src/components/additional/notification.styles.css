@@ -1,0 +1,13 @@
+span {
+  display: inline-block;
+  padding: 1px 15px;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.orange {
+  background-color: orange;
+}
+.green {
+  background-color: lightgreen;
+}

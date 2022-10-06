@@ -1,10 +1,14 @@
-import './vpn-connect.styles.css';
+import LoadingAnimation from '../additional/loading-animation.component.jsx';
+import Notification from '../additional/notification.component.jsx';
 
 import { useState } from 'react';
 
 const VpnConnect = (props) => {
 
   const [formValues, setFormValues] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [badLogin, setBadLogin] = useState(false);
 
   return (
     <div>
@@ -52,27 +56,66 @@ const VpnConnect = (props) => {
           </li>
         </ul>
         
-        <input type="submit" value="submit" />
+        <input type="submit" value="Submit" />
+        <button onClick={clearForm}>
+          Reset
+        </button>
+        <LoadingAnimation loading={loading} />
       </form>
+
+      <Notification 
+        hide={!submitted} 
+        message={"Successfully connected to vpn."} 
+        color={"green"}
+      />
+      <Notification
+        hide={!badLogin}
+        message={"Timed out. Credentials incorrect or forgot push \
+                  notification. Please try again."}
+        color={"orange"}
+      />
     </div>
   )
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const response = await fetch('https://www.colinwood.dev/express/vpn-connect', {
-      method: 'POST', 
-      body: JSON.stringify(formValues),
-      headers: {
-        'Content-Type': 'application/json'
-      },  
-    });
-    
-    // handle errors
+    setLoading(true);
+    setBadLogin(false);
+
+    try {
+      const response = await fetch('https://www.colinwood.dev/express/vpn-connect', {
+        method: 'POST', 
+        body: JSON.stringify(formValues),
+        headers: {
+          'Content-Type': 'application/json'
+        },  
+      });
+
+      const status = await response.json();
+      console.log("response status: ", status);
+      setLoading(false);
+      if (status.status == 'success') {
+        setSubmitted(true);
+      } else if (status.status == 'error') {
+        setBadLogin(true);
+      }
+      clearForm(event);
+      
+    } catch (error) {
+      setLoading(false);
+      clearForm(event);
+      console.log("Error logging into vpn. ", error);
+    }
   }
 
   async function handleInputChange(event) {
     event.preventDefault();
     setFormValues({ ...formValues, [event.target.name]: event.target.value });
+  }
+
+  async function clearForm(event) {
+    event.preventDefault();
+    setFormValues({});
   }
 }
 
