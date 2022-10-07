@@ -44,7 +44,7 @@ const VpnStatus = (props) => {
                 color={"green"}
               />;
   } else if (vpnStatus == 0) {
-    const children = <p>Do that first <Link to="/vpn-connect">here.</Link></p>;
+    const children = <p>Do that first <Link to="/simulation/vpn-connect">here.</Link></p>;
     message = <Notification 
                 hide={false} 
                 message={"You are not connected to the vpn."}
