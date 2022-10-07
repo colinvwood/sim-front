@@ -5,7 +5,7 @@ export async function retrieveRunStats(runId, comboString) {
 
   const path = '/projects/pearson_lab/trans_simulation';
   const monsoon = 'cvw29@monsoon.hpc.nau.edu';
-  const transferPath = '/var/www/html/sim-front/'
+  const transferPath = '/var/www/html/sim-front/temp/'
 
   // combine stats if multiple reps
   const averageCommand = `ssh ${monsoon} "python ${path}/compute_averages.py ${runId} ${comboString}"`;
@@ -18,7 +18,7 @@ export async function retrieveRunStats(runId, comboString) {
 }
 
 export async function statsToCsv(runId, statsFile) {
-  const path = '/var/www/html/sim-front/'
+  const path = '/var/www/html/sim-front/temp/'
 
   var data;
   try {
