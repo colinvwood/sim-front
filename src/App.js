@@ -11,14 +11,11 @@ export default function App() {
       <h1>Sim front</h1>
 
       <Routes basename={process.env.PUBLIC_URL}>
-        <Route path="/" element={ <Home /> } />
-        <Route path="/sim" element={ <Sim /> } />
-        <Route path="/data" element={ <Data /> } />
-        <Route path="/vpn-connect" element={ <VpnConnect /> } />
+        <Route path="/simulation" element={ <Home /> } />
+        <Route path="/simulation/sim" element={ <Sim /> } />
+        <Route path="/simulation/data" element={ <Data /> } />
+        <Route path="/simulation/vpn-connect" element={ <VpnConnect /> } />
       </Routes>
-
-
-        
         
     </div>
   );
