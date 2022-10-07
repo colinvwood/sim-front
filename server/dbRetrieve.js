@@ -37,9 +37,8 @@ export default async function dbRetrieve(name, recentNumber) {
 
   for (let i = 0; i < runResults.rows.length; i++) {
     var run_id = runResults.rows[i]['run_id'];
-    var repetitions = runResults.rows[i]['repetitions'];
-    var status = checkRunStatus(run_id, repetitions);
-    runResults.rows[i]['status'] = status;
+    var status = checkRunStatus(run_id);
+    runResults.rows[i]['status'] = status.status;
   }
   
   return runResults.rows;

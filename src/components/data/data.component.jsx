@@ -12,6 +12,7 @@ const Data = (props) => {
   const [rows, setRows] = useState([]);
   const [runs, setRuns] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     var key = 0;
@@ -69,6 +70,7 @@ const Data = (props) => {
       </form>
 
       {runs}
+      {runs.length == 0 && submitted && <p>No runs found.</p>}
 
     </div>
     
@@ -97,8 +99,10 @@ const Data = (props) => {
       const rows = records.records;
       setRows(rows);
 
+      setSubmitted(true);
       setLoading(false);
-      clearForm(event);
+      setSimName('');
+      setRecentNumber(0);
 
     } catch (error) {
       setLoading(false);
@@ -119,8 +123,10 @@ const Data = (props) => {
 
   async function clearForm(event) {
     event.preventDefault();
+    setSubmitted(false);
     setSimName('');
     setRecentNumber(0);
+    setRows([]);
   }
 
 }

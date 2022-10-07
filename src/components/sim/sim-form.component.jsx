@@ -177,6 +177,7 @@ const SimForm = (props) => {
   async function handleSubmit(event) {
     event.preventDefault();
     setLoading(true);
+    setSubmitted(false);
 
     try {
       const response = await fetch('https://www.colinwood.dev/express/sim-new', {

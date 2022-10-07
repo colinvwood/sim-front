@@ -51,7 +51,6 @@ app.post('/express/sim-new', async (req, res) => {
 
 app.post('/express/retrieve-records', async (req, res) => {
     console.log("in retrieve records");
-    console.log("body:  ", req.body);
     let records;
     if (req.body['simName']) {
         console.log("name retrieve");

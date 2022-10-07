@@ -1,7 +1,12 @@
 import './run.styles.css';
+import LoadingAnimation from '../additional/loading-animation.component.jsx';
 import download from 'downloadjs';
 
+import { useState } from 'react';
+
 const Run = (props) => {
+
+  const [loading, setLoading] = useState(false);
 
   const values = []
   for (let key in props.data) {
@@ -16,14 +21,18 @@ const Run = (props) => {
   return(
     <div id="runData">
       {values}
-      <button id={props.data['run_id']} onClick={handleRunClick}>Select</button>
+      {props.data.status == "finished" && 
+        <button id={props.data['run_id']} onClick={handleRunClick}>
+          Download
+        </button>
+      }
+      <LoadingAnimation loading={loading} />
     </div>
   )
 
   async function handleRunClick(event) {
     event.preventDefault();
-    console.log(event.target.id);
-    console.log(props.data)
+    setLoading(true);
 
     try {
       const response = await fetch('https://www.colinwood.dev/express/retrieve-stats', {
@@ -47,10 +56,12 @@ const Run = (props) => {
         download(fileBlob, `stats-run-${event.target.id}.csv`);
       } catch (error) {
         console.log("Error getting run stats.")
-      }
+      } 
 
     } catch (error) {
-      console.log("Error posting for run stats.");
+      console.log("Error posting for run stats. ", error);
+    } finally {
+      setLoading(false);
     }
   }
 

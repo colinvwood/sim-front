@@ -32,9 +32,9 @@ async function startRun(form, runId) {
   // begin simulation on monsoon
   var startCommand;
   if (form['repetitions'] > 1) {
-    startCommand = `sbatch ${path}/run_repeat.sh ${path}/runs/run-${runId}/run-${runId}-config.json ${form["repetitions"]}`;
+    startCommand = `sbatch -J sim-run-${runId} ${path}/run_repeat.sh ${path}/runs/run-${runId}/run-${runId}-config.json ${form["repetitions"]}`;
   } else {
-    startCommand = `sbatch ${path}/run_single.sh ${path}/runs/run-${runId}/run-${runId}-config.json`;
+    startCommand = `sbatch -J sim-run-${runId} ${path}/run_single.sh ${path}/runs/run-${runId}/run-${runId}-config.json`;
   }
   execSync(`ssh ${monsoon} ${startCommand}`);
 

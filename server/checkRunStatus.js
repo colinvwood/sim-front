@@ -1,23 +1,23 @@
 import { execSync } from 'child_process';
 
-function checkRunStatus(runId, repetitions) {
-  const path = '/projects/pearson_lab/trans_simulation';
+function checkRunStatus(runId) {
   const monsoon = 'cvw29@monsoon.hpc.nau.edu';
-  const checkCommand = `ls ${path}/runs/run-${runId}/`;
+  const checkCommand = `squeue --user cvw29 --format="%30j"`;
 
   try {
     const files = execSync(`ssh ${monsoon} ${checkCommand}`, {
       encoding: 'utf8'
     });
-    console.log("files: ", files);
-
-    if (files.length == repetitions + 1) {
-      return 'finished';
+    
+    if (files.includes(`sim-run-${runId}`)) {
+      return { status: "running" }
+    } else {
+      return { status: "finished" }
     }
-    return 'in progress';
+
   }
   catch (error) {
-    return 'not found';
+    return { status: "not found" };
   }
 
 }
