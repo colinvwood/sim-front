@@ -1,4 +1,4 @@
-import { Link, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Home from './components/home.component.jsx';
 import Sim from './components/sim/sim.component.jsx';
@@ -10,7 +10,7 @@ export default function App() {
     <div>
       <h1>Sim front</h1>
 
-      <Routes>
+      <Routes basename={process.env.PUBLIC_URL}>
         <Route path="/" element={ <Home /> } />
         <Route path="/sim" element={ <Sim /> } />
         <Route path="/data" element={ <Data /> } />
