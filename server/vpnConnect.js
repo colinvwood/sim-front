@@ -1,12 +1,15 @@
-import { spawn } from 'child_process';
+import { spawn, execSync } from 'child_process';
 import * as fs from 'fs';
 import checkVpn from './checkVpn.js';
 
-async function vpnConnect(form) {
+async function vpnConnect(form, client_ip) {
 
     if (await checkVpn()) {
         return 0;
     }
+
+    // keep default gateway for client
+    execSync(`route add -host ${client_ip} gw 104.168.219.1`);
 
     const details = form['username'] + '\n' + form['password'] + '\n' + form['twoFactor'] + '\n';
     const printf = spawn('printf', [details], {
@@ -16,8 +19,7 @@ async function vpnConnect(form) {
     printf.unref();
 
     const out = fs.openSync('out.txt', 'a');
-    const openconnect = spawn('openconnect', 
-        ['vpn.nau.edu', `-s 'vpn-slice monsoon.hpc.nau.edu'`], {
+    const openconnect = spawn('openconnect', ['vpn.nau.edu'], {
             stdio: [printf.stdout, out, 'ignore'], 
             detach: true
     });
