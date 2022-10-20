@@ -9,7 +9,11 @@ async function vpnConnect(form, client_ip) {
     }
 
     // keep default gateway for client
-    execSync(`route add -host ${client_ip} gw 104.168.219.1`);
+    try {
+        execSync(`route add -host ${client_ip} gw 104.168.219.1`);
+    } catch (err) {
+        console.log("Error adding route: ", err);
+    }
 
     const details = form['username'] + '\n' + form['password'] + '\n' + form['twoFactor'] + '\n';
     const printf = spawn('printf', [details], {
