@@ -25,3 +25,6 @@ yarn-error.log*
 
 db/simulation.db
 temp/
+api.out
+api.err
+
