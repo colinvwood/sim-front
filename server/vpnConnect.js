@@ -16,9 +16,10 @@ async function vpnConnect(form) {
     printf.unref();
 
     const out = fs.openSync('out.txt', 'a');
-    const openconnect = spawn('openconnect', ['vpn.nau.edu'], {
-        stdio: [printf.stdout, out, 'ignore'], 
-        detach: true
+    const openconnect = spawn('openconnect', 
+        ['vpn.nau.edu', `-s 'vpn-slice monsoon.hpc.nau.edu'`], {
+            stdio: [printf.stdout, out, 'ignore'], 
+            detach: true
     });
     openconnect.unref();
 
