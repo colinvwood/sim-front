@@ -22,7 +22,8 @@ app.get('/express/check-vpn', async (req, res) => {
 
 app.post('/express/vpn-connect', async (req, res) => {
     console.log('connecting to vpn');
-    const pid = await vpnConnect(req.body);
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const pid = await vpnConnect(req.body, ip);
     console.log('connected to vpn, pid: ', pid);
 
     if (pid == -1) {
@@ -42,7 +43,7 @@ app.post('/express/sim-new', async (req, res) => {
     console.log('added run to db');
 
     // run sim on monsoon
-    startRun(req.body, runId);
+    await startRun(req.body, runId);
     console.log('started run on monsoon');
 
     res.status(200);
