@@ -31,8 +31,10 @@ async function startRun(form, runId) {
 
   // begin simulation on monsoon
   var startCommand;
-  if (form['repetitions'] > 1) {
-    startCommand = `sbatch -J sim-run-${runId} ${path}/run_repeat.sh ${path}/runs/run-${runId}/run-${runId}-config.json ${form["repetitions"]}`;
+  if (form['repetitions'] > 25) {
+    startCommand = `sbatch -J sim-run-${runId} ${path}/run_repeat_large.sh ${path}/runs/run-${runId}/run-${runId}-config.json ${form["repetitions"]}`;
+  } else if (form['repetitions'] > 1) {
+    startCommand = `sbatch -J sim-run-${runId} ${path}/run_repeat_small.sh ${path}/runs/run-${runId}/run-${runId}-config.json ${form["repetitions"]}`;
   } else {
     startCommand = `sbatch -J sim-run-${runId} ${path}/run_single.sh ${path}/runs/run-${runId}/run-${runId}-config.json`;
   }
@@ -40,23 +42,5 @@ async function startRun(form, runId) {
 
   execSync(`rm ${configFile}`);
 }
-
-
-
-const test = {
-  mutationRate: 1.6000000000000002e-10,
-  genomeSize: 2800000,
-  repetitions: 1,
-  name: 'test',
-  srcGen: '100',
-  recGen: '1',
-  bottleneck: '1',
-  capacity: '1000',
-  sampleSize: '10',
-  username: 'cvw29',
-  password: 'Gmajors3001!',
-  twoFactor: 'push'
-}
-//startRun(test, 1);
 
 export default startRun;

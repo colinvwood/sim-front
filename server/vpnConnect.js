@@ -12,6 +12,7 @@ async function vpnConnect(form, client_ip) {
     try {
         execSync(`route add -host ${client_ip} gw 104.168.219.1`);
     } catch (err) {
+        // route might already exist from previous use
         console.log("Error adding route: ", err);
     }
 
