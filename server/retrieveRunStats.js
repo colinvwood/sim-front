@@ -28,8 +28,8 @@ export async function statsToCsv(runId, statsFile) {
   await client.connect();
 
   // get run description
-  sql = `SELECT run.description FROM run WHERE run.id=${runId}`;
-  results = await client.query(sql);
+  const sql = `SELECT run.description FROM run WHERE run.id=${runId}`;
+  const results = await client.query(sql);
   console.log("NAME DESC RESULTS: ", results);
 
 
