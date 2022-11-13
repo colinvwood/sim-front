@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import * as fs from 'fs';
 
 import vpnConnect from './vpnConnect.js';
 import dbAddRun from './dbAddRun.js';

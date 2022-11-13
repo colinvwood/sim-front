@@ -39,6 +39,19 @@ const SimForm = (props) => {
           </li>
 
           <li>
+            <label htmlFor="description">
+              Describe the purpose of the simulation(s):
+            </label>
+            <input
+              type="text"
+              name="description"
+              value={formValues['description'] ? formValues['description'] : ''}
+              onChange={handleInputChange} 
+              required
+            />
+          </li>
+
+          <li>
             <label htmlFor="srcGen">
               The number of generations to run the simulation pre transmission:
             </label>

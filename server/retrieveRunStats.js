@@ -1,8 +1,9 @@
 import { execSync } from 'child_process';
 import * as fs from 'fs/promises';
+import pg from 'pg';
+const Client = pg.Client;
 
 export async function retrieveRunStats(runId, comboString) {
-
   const path = '/projects/pearson_lab/trans_simulation';
   const monsoon = 'cvw29@monsoon.hpc.nau.edu';
   const transferPath = '/var/www/html/sim-front/temp/'
@@ -18,6 +19,20 @@ export async function retrieveRunStats(runId, comboString) {
 }
 
 export async function statsToCsv(runId, statsFile) {
+  const client = new Client({
+    host: 'localhost',
+    user: 'root',
+    password: 'password',
+    database: 'simulation',
+  });
+  await client.connect();
+
+  // get run description
+  sql = `SELECT run.description FROM run WHERE run.id=${runId}`;
+  results = await client.query(sql);
+  console.log("NAME DESC RESULTS: ", results);
+
+
   const path = '/var/www/html/sim-front/temp/'
 
   var data;
