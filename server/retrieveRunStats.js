@@ -19,19 +19,6 @@ export async function retrieveRunStats(runId, comboString) {
 }
 
 export async function statsToCsv(runId, statsFile) {
-  const client = new Client({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'simulation',
-  });
-  await client.connect();
-
-  // get run description
-  const sql = `SELECT run.description FROM run WHERE run.run_id=${runId}`;
-  const results = await client.query(sql);
-  let description = results.rows[0]['description'];
-  description = description + '\n';
 
   // read data from stats file
   var data;
@@ -42,11 +29,12 @@ export async function statsToCsv(runId, statsFile) {
   }
 
   // write csv file
+  const description = getRunDescription(runId);
   const path = '/var/www/html/sim-front/temp/'
   const stats = JSON.parse(data);
   try {
     await fs.writeFile(
-      `${path}stats-run-${runId}.csv`, description, { flag: 'a' }
+      `${path}stats-run-${runId}.csv`, description, { flag: 'w+' }
     );
   } catch (error) {
     console.log("Error writing csv file: ", error);
@@ -72,4 +60,23 @@ export async function statsToCsv(runId, statsFile) {
   }
 
   return `${path}stats-run-${runId}.csv`;
+}
+
+async function getRunDescription(runId) {
+  const client = new Client({
+    host: 'localhost',
+    user: 'root',
+    password: 'password',
+    database: 'simulation',
+  });
+  await client.connect();
+
+  // get run description
+  const sql = `SELECT run.description FROM run WHERE run.run_id=${runId}`;
+  const results = await client.query(sql);
+  let description = results.rows[0]['description'];
+  description = description + '\n';
+  console.log("--description is: ", description);
+  
+  return description;
 }
