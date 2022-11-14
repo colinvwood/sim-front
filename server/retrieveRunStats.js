@@ -75,7 +75,7 @@ async function getRunDescription(runId) {
   const sql = `SELECT run.description FROM run WHERE run.run_id=${runId}`;
   const results = await client.query(sql);
   let description = results.rows[0]['description'];
-  description = description + '\n';
+  description = description + '\n\n';
   console.log("--description is: ", description);
   
   return description;
