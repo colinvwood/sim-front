@@ -15,13 +15,13 @@ export default async function dbRetrieve(name, recentNumber) {
   var runResults;
   var sql;
   if (name) {
-    sql = `SELECT run.date, run.run_id, parameters.source_generations, parameters.recipient_generations,
+    sql = `SELECT run.name, run.date, run.run_id, parameters.source_generations, parameters.recipient_generations,
               parameters.bottleneck, parameters.combinations FROM run 
              INNER JOIN parameters ON run.parameters_id = parameters.parameters_id 
              WHERE run.name='${name.toLowerCase()}';`;
     runResults = await client.query(sql);
   } else if (recentNumber) {
-    sql = `SELECT run.date, run.run_id, parameters.source_generations, parameters.recipient_generations,
+    sql = `SELECT run.name, run.date, run.run_id, parameters.source_generations, parameters.recipient_generations,
               parameters.bottleneck, parameters.combinations FROM run 
              INNER JOIN parameters ON run.parameters_id = parameters.parameters_id 
              ORDER BY run_id DESC LIMIT ${recentNumber};`;
