@@ -29,7 +29,7 @@ export async function statsToCsv(runId, statsFile) {
   }
 
   // write csv file
-  const description = getRunDescription(runId);
+  const description = await getRunDescription(runId);
   const path = '/var/www/html/sim-front/temp/'
   const stats = JSON.parse(data);
   try {
