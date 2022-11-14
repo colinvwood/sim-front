@@ -42,9 +42,10 @@ const SimForm = (props) => {
             <label htmlFor="description">
               Describe the purpose of the simulation(s):
             </label>
+            <br />
             <textarea
               name="description"
-              cols="25"
+              cols="60"
               rows="4"
               value={formValues['description'] ? formValues['description'] : ''}
               onChange={handleInputChange} 

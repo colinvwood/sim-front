@@ -28,13 +28,12 @@ export async function statsToCsv(runId, statsFile) {
   await client.connect();
 
   // get run description
-  const sql = `SELECT run.description FROM run WHERE run.id=${runId}`;
+  const sql = `SELECT run.description FROM run WHERE run.run_id=${runId}`;
   const results = await client.query(sql);
-  console.log("NAME DESC RESULTS: ", results);
+  let description = results.rows[0]['description'];
+  description = description + '\n';
 
-
-  const path = '/var/www/html/sim-front/temp/'
-
+  // read data from stats file
   var data;
   try {
     data = await fs.readFile(statsFile, {encoding: 'utf8'});
@@ -42,7 +41,17 @@ export async function statsToCsv(runId, statsFile) {
     console.log("Error reading stats file.");
   }
 
+  // write csv file
+  const path = '/var/www/html/sim-front/temp/'
   const stats = JSON.parse(data);
+  try {
+    await fs.writeFile(
+      `${path}stats-run-${runId}.csv`, description, { flag: 'a' }
+    );
+  } catch (error) {
+    console.log("Error writing csv file: ", error);
+  }
+
   for (var combo_size in stats) {
     var csvString = 
       `${combo_size}
@@ -54,7 +63,9 @@ export async function statsToCsv(runId, statsFile) {
        ,combined average,${stats[combo_size]['combined average']}\n\n`;
     
     try {
-      await fs.writeFile(`${path}stats-run-${runId}.csv`, csvString, { flag: 'a' });
+      await fs.writeFile(
+        `${path}stats-run-${runId}.csv`, csvString, { flag: 'a' }
+      );
     } catch (error) {
       console.log("Error writing csv file.");
     }
