@@ -5,6 +5,7 @@ async function startRun(form, runId) {
 
   // create run directory on monsoon
   const path = '/projects/pearson_lab/trans_simulation';
+  const runPath = `${path}/runs/run-${runId}`;
   const monsoon = 'cvw29@monsoon.hpc.nau.edu';
   const dirCommand = `mkdir -p ${path}/runs/run-${runId}/`;
   execSync(`ssh ${monsoon} ${dirCommand}`);
@@ -30,13 +31,19 @@ async function startRun(form, runId) {
   execSync(`scp ${configFile} ${configPath}`);
 
   // begin simulation on monsoon
+  // run_repeat_small and run_repeat_large scripts expect:
+  //    ./script.sh json_config_file path_to_output repetitions
+  // 
+  // run_single script expects:
+  //    ./script.sh json_config_file path_to_output
   var startCommand;
+  const baseCommand = `sbatch -J sim-run-${runId} `;
   if (form['repetitions'] > 25) {
-    startCommand = `sbatch -J sim-run-${runId} ${path}/run_repeat_large.sh ${path}/runs/run-${runId}/run-${runId}-config.json ${form["repetitions"]}`;
+    startCommand = baseCommand + `${path}/run_repeat_large.sh ${runPath}/run-${runId}-config.json ${runPath} ${form["repetitions"]}`;
   } else if (form['repetitions'] > 1) {
-    startCommand = `sbatch -J sim-run-${runId} ${path}/run_repeat_small.sh ${path}/runs/run-${runId}/run-${runId}-config.json ${form["repetitions"]}`;
+    startCommand = baseCommand + `${path}/run_repeat_small.sh ${runPath}/run-${runId}-config.json ${runPath} ${form["repetitions"]}`;
   } else {
-    startCommand = `sbatch -J sim-run-${runId} ${path}/run_single.sh ${path}/runs/run-${runId}/run-${runId}-config.json`;
+    startCommand = baseCommand + `${path}/run_single.sh ${runPath}/run-${runId}-config.json ${runPath}`;
   }
   execSync(`ssh ${monsoon} ${startCommand}`);
 
