@@ -27,4 +27,4 @@ db/simulation.db
 temp/
 api.out
 api.err
-
+run*config.json
